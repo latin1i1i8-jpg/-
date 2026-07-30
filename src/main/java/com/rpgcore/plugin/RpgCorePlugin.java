@@ -16,6 +16,8 @@ import com.rpgcore.plugin.planet.PlanetManager;
 import com.rpgcore.plugin.tower.TowerListener;
 import com.rpgcore.plugin.tower.TowerManager;
 import com.rpgcore.plugin.tower.VoidGenerator;
+import com.rpgcore.plugin.magic.MagicManager;
+import com.rpgcore.plugin.magic.MagicListener;
 import com.rpgcore.plugin.util.BedrockUtil;
 import com.rpgcore.plugin.util.Msg;
 import org.bukkit.Location;
@@ -34,6 +36,9 @@ public class RpgCorePlugin extends JavaPlugin {
     private PlanetManager planetManager;
     private MobStats mobStats;
     private TowerManager towerManager;
+    private MagicManager magicManager;
+    private org.bukkit.NamespacedKey magicNameKey;
+    private org.bukkit.NamespacedKey magicDamageKey;
 
     /** 탑 안에서 로그아웃한 플레이어를 다음 접속 때 돌려보낼 좌표 */
     private final Map<UUID, Location> pendingTowerExit = new HashMap<>();
@@ -59,6 +64,12 @@ public class RpgCorePlugin extends JavaPlugin {
         this.planetManager = new PlanetManager(this);
         this.planetManager.load();
 
+        // ⭐ 마법 시스템 (new)
+        PlanetSpawnListener.initKeys(this);
+        this.magicNameKey = new org.bukkit.NamespacedKey(this, "rpg_magic_name");
+        this.magicDamageKey = new org.bukkit.NamespacedKey(this, "rpg_magic_damage");
+        this.magicManager = new MagicManager(this);
+
         // ⭐ 시련의 탑 (돌 탑 + 한 층에 몬스터 1마리)
         this.towerManager = new TowerManager(this);
         this.towerManager.load();
@@ -77,6 +88,8 @@ public class RpgCorePlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlanetSpawnListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new TowerListener(this), this);
+        getServer().getPluginManager().registerEvents(new MagicListener(this), this);
+        getServer().getPluginManager().registerEvents(new MagicListener(this), this);
 
         // 탑 진행 점검 (0.5초마다) — 위층에 올라가면 그 층 몬스터 1마리 소환
         getServer().getScheduler().runTaskTimer(this, () -> towerManager.tick(), 40L, 10L);
@@ -118,6 +131,12 @@ public class RpgCorePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // 마법 시스템 정리
+        if (magicManager != null) {
+            for (org.bukkit.entity.Player p : getServer().getOnlinePlayers()) {
+                magicManager.onPlayerQuit(p.getUniqueId());
+            }
+        }
         if (dataManager != null) {
             dataManager.saveAll();
         }
@@ -138,6 +157,18 @@ public class RpgCorePlugin extends JavaPlugin {
 
     public TowerManager getTowerManager() {
         return towerManager;
+    }
+
+    public MagicManager getMagicManager() {
+        return magicManager;
+    }
+
+    public org.bukkit.NamespacedKey getMagicNameKey() {
+        return magicNameKey;
+    }
+
+    public org.bukkit.NamespacedKey getMagicDamageKey() {
+        return magicDamageKey;
     }
 
     public Map<UUID, Location> getPendingTowerExit() {
