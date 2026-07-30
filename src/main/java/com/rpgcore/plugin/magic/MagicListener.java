@@ -72,15 +72,14 @@ public class MagicListener implements Listener {
                     ChatColor.GRAY + "마나 소비: " + magic.getManaCost(),
                     ChatColor.GRAY + magic.getDescription()
                 ));
+                // 마법 이름을 ItemMeta에 저장
+                meta.getPersistentDataContainer().set(
+                    plugin.getMagicNameKey(),
+                    org.bukkit.persistence.PersistentDataType.STRING,
+                    magic.name()
+                );
                 item.setItemMeta(meta);
             }
-
-            // 마법 이름을 NBT 태그에 저장해서 나중에 읽기
-            item.getPersistentDataContainer().set(
-                plugin.getMagicNameKey(),
-                PersistentDataType.STRING,
-                magic.name()
-            );
 
             inv.setItem(slot++, item);
         }
@@ -106,9 +105,14 @@ public class MagicListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         PlayerData data = plugin.getDataManager().get(player.getUniqueId());
 
-        String magicName = clicked.getPersistentDataContainer().get(
+        ItemMeta meta = clicked.getItemMeta();
+        if (meta == null) {
+            return;
+        }
+
+        String magicName = meta.getPersistentDataContainer().get(
             plugin.getMagicNameKey(),
-            PersistentDataType.STRING
+            org.bukkit.persistence.PersistentDataType.STRING
         );
         if (magicName == null) {
             return;

@@ -92,10 +92,10 @@ public enum Magic {
             return false;
         }
         return switch (this) {
-            case FIRE, FREEZE, LIGHTNING, HEAL -> job.equals("마법사");
-            case LIGHTNING -> job.equals("마법사") || job.equals("전사") || job.equals("도적");
             case FIRE -> job.equals("마법사") || job.equals("궁수");
-            default -> false;
+            case FREEZE -> job.equals("마법사");
+            case LIGHTNING -> job.equals("마법사") || job.equals("전사") || job.equals("도적");
+            case HEAL -> job.equals("마법사");
         };
     }
 }

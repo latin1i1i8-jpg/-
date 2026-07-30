@@ -160,7 +160,8 @@ public class MagicManager {
             Vector toEntity = entity.getLocation().subtract(loc).toVector().normalize();
             if (toEntity.dot(dir) > 0.5 && dist < 20) {
                 entity.damage(damage, player);
-                entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 1, false, false)); // 느려짐 3초
+                // Paper 1.20.4: SLOWNESS 는 구버전, 대신 SLOW_FALLING 사용
+                entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 60, 0, false, false)); // 느려짐 3초
                 break; // 첫 번째 몬스터만 타격
             }
         }
@@ -179,7 +180,7 @@ public class MagicManager {
             if (!isValidTarget(entity)) continue;
 
             entity.damage(damage, player);
-            entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20, 3, false, false)); // 스턴 1초
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 0, false, false)); // 스턴 1초
         }
     }
 
