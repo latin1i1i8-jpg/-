@@ -6,10 +6,12 @@ import com.rpgcore.plugin.job.PlayerStatApplier;
 import com.rpgcore.plugin.util.BedrockUtil;
 import com.rpgcore.plugin.util.Msg;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class PlayerJoinListener implements Listener {
 
@@ -25,6 +27,15 @@ public class PlayerJoinListener implements Listener {
         PlayerData data = plugin.getDataManager().get(player.getUniqueId());
         PlayerStatApplier.apply(player, data);
 
+        // ⭐ 마나 초기화 (처음 접속하면 최대값)
+        plugin.getMagicManager().setMana(player.getUniqueId(), plugin.getMagicManager().getMaxMana(data), data);
+
+        // ⭐ 시작 아이템: 철검 + 막대기
+        ItemStack ironSword = new ItemStack(Material.IRON_SWORD);
+        ItemStack stick = new ItemStack(Material.STICK);
+
+        player.getInventory().addItem(ironSword, stick);
+
         // ⭐ 베드락(휴대폰/콘솔) 플레이어에게는 한글 입력 없이 쓸 수 있는 명령어를 안내
         if (BedrockUtil.isBedrock(player) && plugin.getConfig().getBoolean("bedrock.welcome-hint", true)) {
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
@@ -36,5 +47,7 @@ public class PlayerJoinListener implements Listener {
                 Msg.send(player, ChatColor.GRAY + "  /job  /setjob 1  /info  /planet  /warp 2  /map  /tower  /top");
             }, 40L);
         }
+
+        Msg.send(player, ChatColor.GOLD + "🎮 RpgCore에 오신 것을 환영합니다! 철검으로 공격, 막대기로 마법을 시전하세요!");
     }
 }

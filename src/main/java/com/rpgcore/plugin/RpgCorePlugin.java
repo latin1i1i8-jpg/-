@@ -11,6 +11,7 @@ import com.rpgcore.plugin.data.DataManager;
 import com.rpgcore.plugin.listeners.MobDeathListener;
 import com.rpgcore.plugin.listeners.PlanetSpawnListener;
 import com.rpgcore.plugin.listeners.PlayerJoinListener;
+import com.rpgcore.plugin.listeners.PlayerDeathListener;
 import com.rpgcore.plugin.mob.MobStats;
 import com.rpgcore.plugin.planet.PlanetManager;
 import com.rpgcore.plugin.tower.TowerListener;
@@ -18,6 +19,8 @@ import com.rpgcore.plugin.tower.TowerManager;
 import com.rpgcore.plugin.tower.VoidGenerator;
 import com.rpgcore.plugin.magic.MagicManager;
 import com.rpgcore.plugin.magic.MagicListener;
+import com.rpgcore.plugin.magic.NPCMagicTrainer;
+import com.rpgcore.plugin.magic.NPCMagicListener;
 import com.rpgcore.plugin.util.BedrockUtil;
 import com.rpgcore.plugin.util.Msg;
 import org.bukkit.Location;
@@ -37,6 +40,7 @@ public class RpgCorePlugin extends JavaPlugin {
     private MobStats mobStats;
     private TowerManager towerManager;
     private MagicManager magicManager;
+    private NPCMagicTrainer npcMagicTrainer;
     private org.bukkit.NamespacedKey magicNameKey;
     private org.bukkit.NamespacedKey magicDamageKey;
 
@@ -69,6 +73,7 @@ public class RpgCorePlugin extends JavaPlugin {
         this.magicNameKey = new org.bukkit.NamespacedKey(this, "rpg_magic_name");
         this.magicDamageKey = new org.bukkit.NamespacedKey(this, "rpg_magic_damage");
         this.magicManager = new MagicManager(this);
+        this.npcMagicTrainer = new NPCMagicTrainer(this, this.magicNameKey);
 
         // ⭐ 시련의 탑 (돌 탑 + 한 층에 몬스터 1마리)
         this.towerManager = new TowerManager(this);
@@ -87,9 +92,10 @@ public class RpgCorePlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MobDeathListener(this), this);
         getServer().getPluginManager().registerEvents(new PlanetSpawnListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new TowerListener(this), this);
         getServer().getPluginManager().registerEvents(new MagicListener(this), this);
-        getServer().getPluginManager().registerEvents(new MagicListener(this), this);
+        getServer().getPluginManager().registerEvents(new NPCMagicListener(this, npcMagicTrainer), this);
 
         // 탑 진행 점검 (0.5초마다) — 위층에 올라가면 그 층 몬스터 1마리 소환
         getServer().getScheduler().runTaskTimer(this, () -> towerManager.tick(), 40L, 10L);

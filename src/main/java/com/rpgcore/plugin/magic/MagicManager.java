@@ -36,9 +36,33 @@ public class MagicManager {
     private final Map<UUID, Long> magicCooldown = new HashMap<>();
 
     private static final long COOLDOWN_MS = 10 * 1000; // 10초
+    private static final int MANA_REGEN_TICKS = 60; // 3초 = 60틱
 
     public MagicManager(RpgCorePlugin plugin) {
         this.plugin = plugin;
+        startManaRegeneration();
+    }
+
+    /** 3초마다 모든 플레이어에게 마나 1씩 회복 (무음) */
+    private void startManaRegeneration() {
+        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(
+            plugin,
+            () -> {
+                for (org.bukkit.entity.Player player : plugin.getServer().getOnlinePlayers()) {
+                    PlayerData data = plugin.getDataManager().get(player.getUniqueId());
+                    if (data == null) continue;
+
+                    int currentMana = getMana(player.getUniqueId(), data);
+                    int maxMana = getMaxMana(data);
+
+                    if (currentMana < maxMana) {
+                        addMana(player.getUniqueId(), 1, data);
+                    }
+                }
+            },
+            0,
+            MANA_REGEN_TICKS // 3초
+        );
     }
 
     /**
