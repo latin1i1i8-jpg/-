@@ -552,7 +552,7 @@ public class TowerManager {
 
         if (floor >= floors) {
             Msg.send(player, ChatColor.GOLD + "🏆 시련의 탑 " + floors + "층 전부 정복! 최상층을 클리어했습니다!");
-            Msg.title(player, ChatColor.GOLD + "탑 정복!", ChatColor.WHITE + floors + "층 클리어");
+            Msg.title(player, ChatColor.GOLD + "탑 정복!", ChatColor.WHITE + "" + floors + "층 클리어");
             exit(player, false);
             return;
         }
@@ -590,7 +590,7 @@ public class TowerManager {
                 run.floor = current;
                 buildFloor(world, run, current);
                 buildFloor(world, run, current + 1);
-                Msg.title(player, ChatColor.GOLD + current + "층", ChatColor.WHITE + "몬스터를 처치하세요");
+                Msg.title(player, ChatColor.GOLD + "" + current + "층", ChatColor.WHITE + "몬스터를 처치하세요");
                 spawnFloorMob(world, player, run, current);
                 continue;
             }
