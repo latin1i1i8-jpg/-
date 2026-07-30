@@ -1,0 +1,55 @@
+name: RpgCore
+version: 2.1.0
+main: com.rpgcore.plugin.RpgCorePlugin
+api-version: '1.20'
+author: rpgcore
+description: 디스코드 봇에서 이식한 RPG 시스템 (행성 차원 + 바닐라 몬스터 스탯 조정 + 시련의 탑 + 베드락 호환)
+
+# Geyser/Floodgate 가 있으면 베드락 플레이어도 그대로 사용 가능 (없어도 정상 작동)
+softdepend: [Geyser-Spigot, floodgate]
+
+# ⭐ 모든 명령어에 영문 별칭이 있습니다.
+#   베드락(휴대폰/콘솔)에서는 한글 입력이 불편하므로 /job, /warp 처럼 쓰세요.
+commands:
+  직업:
+    description: 직업 목록을 확인합니다.
+    usage: /직업
+    aliases: [job, jobs, class]
+  전직:
+    description: 직업을 선택하거나 변경합니다. (번호로도 선택 가능)
+    usage: /전직 <직업이름 또는 번호>
+    aliases: [setjob, changejob, pickjob]
+  내정보:
+    description: 내 레벨/경험치/골드/직업을 확인합니다.
+    usage: /내정보
+    aliases: [info, me, stats]
+  행성:
+    description: 행성 목록과 이동 조건을 확인합니다.
+    usage: /행성
+    aliases: [planet, planets]
+  행성이동:
+    description: 다른 행성 차원으로 이동합니다. (번호로도 선택 가능)
+    usage: /행성이동 <행성이름 또는 번호>
+    aliases: [warp, travel, goplanet]
+  지도:
+    description: 현재 행성의 몬스터/난이도 링 지도를 확인합니다.
+    usage: /지도
+    aliases: [map, area]
+  시련의탑:
+    description: 시련의 탑에 입장합니다. (한 층에 몬스터 1마리)
+    usage: /시련의탑 [나가기|정보]
+    aliases: [탑, tower, trial]
+  랭킹:
+    description: 레벨 랭킹 TOP 10을 확인합니다.
+    usage: /랭킹
+    aliases: [top, rank, ranking]
+  골드지급:
+    description: "[관리자] 유저에게 골드를 지급합니다."
+    usage: /골드지급 <플레이어> <금액>
+    permission: rpgcore.admin
+    aliases: [givegold]
+
+permissions:
+  rpgcore.admin:
+    description: RpgCore 관리자 명령어 사용 권한
+    default: op
