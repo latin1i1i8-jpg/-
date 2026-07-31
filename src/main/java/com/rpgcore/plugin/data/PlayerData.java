@@ -19,6 +19,7 @@ public class PlayerData {
     private int kills = 0;
     private String planet = null;   // 마지막으로 이동한 행성 이름 (정보용)
     private int towerBest = 0;      // 시련의 탑 최고 도달 층
+    private boolean receivedStarterItems = false; // ⭐ 처음 접속 시 아이템 받았는지
     private final Map<String, Integer> killCounts = new HashMap<>();  // 몬스터별 처치 횟수 (은퇴 판정)
 
     public PlayerData(UUID uuid) {
@@ -109,5 +110,14 @@ public class PlayerData {
 
     public Map<String, Integer> getKillCounts() {
         return killCounts;
+    }
+
+    /** ⭐ 처음 접속 시 아이템 받았는지 */
+    public boolean hasReceivedStarterItems() {
+        return receivedStarterItems;
+    }
+
+    public void setReceivedStarterItems(boolean received) {
+        this.receivedStarterItems = received;
     }
 }

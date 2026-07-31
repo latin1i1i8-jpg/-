@@ -57,6 +57,7 @@ public class DataManager {
                 data.setStage(config.getInt(path + "stage", 1));
                 data.setPlanet(config.getString(path + "planet", null));
                 data.setTowerBest(config.getInt(path + "tower-best", 0));
+                data.setReceivedStarterItems(config.getBoolean(path + "received-starter-items", false)); // ⭐ 스타터 아이템
                 if (config.isConfigurationSection(path + "killcounts")) {
                     for (String mobKey : config.getConfigurationSection(path + "killcounts").getKeys(false)) {
                         int count = config.getInt(path + "killcounts." + mobKey, 0);
@@ -101,6 +102,7 @@ public class DataManager {
         config.set(path + "stage", data.getStage());
         config.set(path + "planet", data.getPlanet());
         config.set(path + "tower-best", data.getTowerBest());
+        config.set(path + "received-starter-items", data.hasReceivedStarterItems()); // ⭐ 스타터 아이템
         config.set(path + "killcounts", null); // 기존 섹션 초기화 후 다시 기록
         for (Map.Entry<String, Integer> entry : data.getKillCounts().entrySet()) {
             config.set(path + "killcounts." + entry.getKey(), entry.getValue());

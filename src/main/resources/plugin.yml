@@ -1,5 +1,5 @@
 name: RpgCore
-version: 2.1.0
+version: 1.2.11
 main: com.rpgcore.plugin.RpgCorePlugin
 api-version: '1.20'
 author: rpgcore

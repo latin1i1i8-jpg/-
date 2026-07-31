@@ -6,7 +6,7 @@
 
     <groupId>com.rpgcore</groupId>
     <artifactId>rpg-core-plugin</artifactId>
-    <version>2.1.0</version>
+    <version>1.2.11</version>
     <packaging>jar</packaging>
 
     <properties>
