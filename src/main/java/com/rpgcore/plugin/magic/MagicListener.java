@@ -56,13 +56,16 @@ public class MagicListener implements Listener {
      * 마법 선택 GUI (인벤토리).
      */
     private void openMagicMenu(Player player, String job) {
-        Inventory inv = player.isOp() ? 
-            plugin.getServer().createInventory(null, 18, "⭐ 마법 선택 (OP)") :
-            plugin.getServer().createInventory(null, 9, "마법 선택");
+        Inventory inv = plugin.getServer().createInventory(null, 9, "마법 선택");
 
         int slot = 0;
         for (Magic magic : Magic.values()) {
-            if (!magic.canUse(job)) {
+            // Godswrath는 OP 유저만 표시
+            if (magic == Magic.GODSWRATH && !player.isOp()) {
+                continue;
+            }
+            
+            if (!magic.canUse(job) && magic != Magic.GODSWRATH) {
                 continue; // 이 직업이 사용할 수 없는 마법
             }
 
@@ -84,27 +87,6 @@ public class MagicListener implements Listener {
             }
 
             inv.setItem(slot++, item);
-        }
-
-        // ⭐ OP 유저만 신의 분노 추가
-        if (player.isOp()) {
-            ItemStack godswrath = new ItemStack(Material.DEBUG_STICK);
-            ItemMeta meta = godswrath.getItemMeta();
-            if (meta != null) {
-                meta.setDisplayName(ChatColor.RED + "⭐ 신의 분노");
-                meta.setLore(java.util.List.of(
-                    ChatColor.RED + "무한한 파괴의 마법",
-                    ChatColor.YELLOW + "마나 소비: 없음",
-                    ChatColor.GOLD + "절대 세력을 펼쳐라!"
-                ));
-                meta.getPersistentDataContainer().set(
-                    plugin.getMagicNameKey(),
-                    org.bukkit.persistence.PersistentDataType.STRING,
-                    Magic.GODSWRATH.name()
-                );
-                godswrath.setItemMeta(meta);
-            }
-            inv.setItem(slot, godswrath);
         }
 
         player.openInventory(inv);

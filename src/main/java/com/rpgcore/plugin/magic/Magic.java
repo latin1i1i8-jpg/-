@@ -65,10 +65,10 @@ public enum Magic {
     GODSWRATH(
         "⭐ 신의 분노",
         ChatColor.RED,
-        Material.DEBUG_STICK,
+        Material.DIAMOND_SWORD,
         99.0,     // 극강 데미지
         0,        // 마나 없음 (OP 전용)
-        "신의 분노... 절대 세력이다!"
+        "신의 분노... 절대 세력이다! (OP만)"
     );
 
     private final String displayName;

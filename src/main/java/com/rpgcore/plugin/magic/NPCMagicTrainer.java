@@ -42,23 +42,18 @@ public class NPCMagicTrainer {
      * 마법 배우기 GUI 열기.
      */
     public void openMagicTrainerMenu(Player player) {
-        // 6개 마법 (Godswrath 제외) - 54 슬롯 인벤토리
+        // 6개 마법 (Godswrath는 보이지만 OP만 사용 가능) - 9 슬롯 인벤토리
         Inventory inv = plugin.getServer().createInventory(null, 9, "⭐ 마법 배우기");
 
         int slot = 0;
         for (Magic magic : Magic.values()) {
-            // Godswrath는 GUI에 표시 안 함 (OP 전용)
-            if (magic == Magic.GODSWRATH) {
-                continue;
-            }
-
             ItemStack item = new ItemStack(magic.getIcon());
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 meta.setDisplayName(magic.getColor() + magic.getDisplayName());
                 meta.setLore(java.util.List.of(
                     ChatColor.GRAY + magic.getDescription(),
-                    ChatColor.YELLOW + "마나 소비: " + magic.getManaCost(),
+                    ChatColor.YELLOW + "에메랄드 소비: 5개",
                     ChatColor.GREEN + "클릭해서 배우기"
                 ));
 
@@ -75,6 +70,6 @@ public class NPCMagicTrainer {
         }
 
         player.openInventory(inv);
-        Msg.send(player, ChatColor.GOLD + "마법 선생: 배우고 싶은 마법을 클릭하세요!");
+        Msg.send(player, ChatColor.GOLD + "마법 선생: 배우고 싶은 마법을 클릭하세요! (에메랄드 5개 필요)");
     }
 }

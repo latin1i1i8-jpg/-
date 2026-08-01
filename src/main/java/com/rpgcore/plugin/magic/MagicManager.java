@@ -123,7 +123,7 @@ public class MagicManager {
                 Msg.send(player, ChatColor.RED + "신의 분노는 OP 유저만 사용 가능합니다!");
                 return;
             }
-            // Godswrath는 마나 체크 없음
+            // Godswrath는 마나 체크 없음, 쿨타임 없음
             castGodsWrath(player);
             Msg.send(player, ChatColor.RED + "⭐ 신의 분노 발동!");
             return;
