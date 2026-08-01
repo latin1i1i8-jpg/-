@@ -91,7 +91,7 @@ public class MagicListener implements Listener {
             ItemStack godswrath = new ItemStack(Material.DEBUG_STICK);
             ItemMeta meta = godswrath.getItemMeta();
             if (meta != null) {
-                meta.setDisplayName(ChatColor.RED + ChatColor.BOLD + "⭐ 신의 분노");
+                meta.setDisplayName(ChatColor.RED + "⭐ 신의 분노");
                 meta.setLore(java.util.List.of(
                     ChatColor.RED + "무한한 파괴의 마법",
                     ChatColor.YELLOW + "마나 소비: 없음",

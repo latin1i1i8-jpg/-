@@ -64,7 +64,7 @@ public enum Magic {
     ),
     GODSWRATH(
         "⭐ 신의 분노",
-        ChatColor.RED + ChatColor.BOLD,
+        ChatColor.RED,
         Material.DEBUG_STICK,
         99.0,     // 극강 데미지
         0,        // 마나 없음 (OP 전용)

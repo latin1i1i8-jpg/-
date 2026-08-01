@@ -125,7 +125,7 @@ public class MagicManager {
             }
             // Godswrath는 마나 체크 없음
             castGodsWrath(player);
-            Msg.send(player, ChatColor.RED + ChatColor.BOLD + "⭐ 신의 분노 발동!");
+            Msg.send(player, ChatColor.RED + "⭐ 신의 분노 발동!");
             return;
         }
 
